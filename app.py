@@ -83,6 +83,26 @@ def create_product():
     return product_schema.jsonify(product)
 
 
+# Update single product
+@app.route('/products/<product_id>', methods=['PUT'])
+def update_product(product_id):
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    quantity = request.json['quantity']
+
+    product = Product.query.get(product_id)
+
+    product.name = name
+    product.description = description
+    product.price = price
+    product.quantity = quantity
+
+    db.session.commit()
+
+    return product_schema.jsonify(product)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
