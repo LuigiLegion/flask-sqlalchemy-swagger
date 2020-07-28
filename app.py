@@ -67,6 +67,22 @@ def get_product(product_id):
     return product_schema.jsonify(product)
 
 
+# Create single product
+@app.route('/products', methods=['POST'])
+def create_product():
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    quantity = request.json['quantity']
+
+    product = Product(name, description, price, quantity)
+
+    db.session.add(product)
+    db.session.commit()
+
+    return product_schema.jsonify(product)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
