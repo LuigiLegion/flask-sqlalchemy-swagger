@@ -23,6 +23,32 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
+# Product model
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    description = db.Column(db.String(250))
+    price = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+
+    def __init__(self, name, description, price, quantity):
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity = quantity
+
+
+# Product schema
+class ProductSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'description', 'price', 'quantity')
+
+
+# Initialize schemas
+product_schema = ProductSchema()
+products_schema = ProductSchema(many=True)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
