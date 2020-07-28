@@ -59,6 +59,14 @@ def get_products():
     return jsonify(products)
 
 
+# Get single product
+@app.route('/products/<product_id>', methods=['GET'])
+def get_product(product_id):
+    product = Product.query.get(product_id)
+
+    return product_schema.jsonify(product)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
