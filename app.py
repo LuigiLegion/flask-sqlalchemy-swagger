@@ -49,6 +49,16 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 
 
+# Routes
+# Get all products
+@app.route('/products', methods=['GET'])
+def get_products():
+    products_raw = Product.query.all()
+    products = products_schema.dump(products_raw)
+
+    return jsonify(products)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
