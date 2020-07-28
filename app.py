@@ -49,6 +49,71 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 
 
+# Routes
+# Get all products
+@app.route('/products', methods=['GET'])
+def get_products():
+    products_raw = Product.query.all()
+    products = products_schema.dump(products_raw)
+
+    return jsonify(products)
+
+
+# Get single product
+@app.route('/products/<product_id>', methods=['GET'])
+def get_product(product_id):
+    product = Product.query.get(product_id)
+
+    return product_schema.jsonify(product)
+
+
+# Create single product
+@app.route('/products', methods=['POST'])
+def create_product():
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    quantity = request.json['quantity']
+
+    product = Product(name, description, price, quantity)
+
+    db.session.add(product)
+    db.session.commit()
+
+    return product_schema.jsonify(product)
+
+
+# Update single product
+@app.route('/products/<product_id>', methods=['PUT'])
+def update_product(product_id):
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    quantity = request.json['quantity']
+
+    product = Product.query.get(product_id)
+
+    product.name = name
+    product.description = description
+    product.price = price
+    product.quantity = quantity
+
+    db.session.commit()
+
+    return product_schema.jsonify(product)
+
+
+# Delete single product
+@app.route('/products/<product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    product = Product.query.get(product_id)
+
+    db.session.delete(product)
+    db.session.commit()
+
+    return product_schema.jsonify(product)
+
+
 # Run server
 if __name__ == '__main__':
     app.run(debug=True)
