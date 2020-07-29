@@ -123,11 +123,6 @@ def get_products():
     return jsonify(products), 200
 
 
-# Register path and entities within it
-with app.test_request_context():
-    spec.path(view=get_products)
-
-
 # Get single product
 @app.route('/products/<product_id>', methods=['GET'])
 def get_product(product_id):
@@ -146,11 +141,6 @@ def get_product(product_id):
     product = Product.query.get(product_id)
 
     return product_schema.jsonify(product), 200
-
-
-# Register path and entities within it
-with app.test_request_context():
-    spec.path(view=get_product)
 
 
 # Create single product
@@ -182,11 +172,6 @@ def create_product():
     db.session.commit()
 
     return product_schema.jsonify(product), 201
-
-
-# Register path and entities within it
-with app.test_request_context():
-    spec.path(view=create_product)
 
 
 # Update single product
@@ -227,11 +212,6 @@ def update_product(product_id):
     return product_schema.jsonify(product), 202
 
 
-# Register path and entities within it
-with app.test_request_context():
-    spec.path(view=update_product)
-
-
 # Delete single product
 @app.route('/products/<product_id>', methods=['DELETE'])
 def delete_product(product_id):
@@ -255,8 +235,12 @@ def delete_product(product_id):
     return product_schema.jsonify(product), 204
 
 
-# Register path and entities within it
+# Register paths and entities within them
 with app.test_request_context():
+    spec.path(view=get_products)
+    spec.path(view=get_product)
+    spec.path(view=create_product)
+    spec.path(view=update_product)
     spec.path(view=delete_product)
 
 
