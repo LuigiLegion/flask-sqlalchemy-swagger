@@ -13,6 +13,8 @@ flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 pylint-flask = "*"
+apispec = "*"
+apispec-webframeworks = "*"
 
 [requires]
 python_version = "3.8"
