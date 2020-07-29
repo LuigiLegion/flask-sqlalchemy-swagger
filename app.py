@@ -1,18 +1,22 @@
 # Imports
 import os
-import json
-from pprint import pprint
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
+from flask_swagger_ui import get_swaggerui_blueprint
+# from routes import request_api
+# import json
+# from pprint import pprint
 
 
 # Constants
 # Database file path
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
 
 
 # Initializations
@@ -22,9 +26,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(BASE_DIR, 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Initialize database
+# Initialize ORM
 db = SQLAlchemy(app)
-# Initialize serialization
+# Initialize serialization/deserialization
 ma = Marshmallow(app)
 
 
@@ -74,11 +78,33 @@ spec = APISpec(
 )
 
 
-# Add schema to APISpec
+# Add schemas to APISpec
 spec.components.schema("Product", schema=ProductSchema)
+spec.components.schema("ProductId", schema=ProductParameter)
+
+
+# Initialize Swagger UI blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': 'flask-sqlalchemy-swagger'
+    }
+)
+
+
+# Register blueprint
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+# app.register_blueprint(routes.request_api.get_blueprint())
 
 
 # Routes
+# Swagger UI
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
+
+
 # Get all products
 @app.route('/products', methods=['GET'])
 def get_products():
@@ -94,10 +120,10 @@ def get_products():
     products_raw = Product.query.all()
     products = products_schema.dump(products_raw)
 
-    return jsonify(products)
+    return jsonify(products), 200
 
 
-# Register the path and the entities within it
+# Register path and entities within it
 with app.test_request_context():
     spec.path(view=get_products)
 
@@ -119,10 +145,10 @@ def get_product(product_id):
     """
     product = Product.query.get(product_id)
 
-    return product_schema.jsonify(product)
+    return product_schema.jsonify(product), 200
 
 
-# Register the path and the entities within it
+# Register path and entities within it
 with app.test_request_context():
     spec.path(view=get_product)
 
@@ -133,6 +159,12 @@ def create_product():
     """Single product POST view.
     ---
     post:
+      requestBody:
+        description: Product Object
+        required: true
+        content:
+          application/json:
+            schema: ProductSchema
       responses:
         201:
           content:
@@ -149,10 +181,10 @@ def create_product():
     db.session.add(product)
     db.session.commit()
 
-    return product_schema.jsonify(product)
+    return product_schema.jsonify(product), 201
 
 
-# Register the path and the entities within it
+# Register path and entities within it
 with app.test_request_context():
     spec.path(view=create_product)
 
@@ -166,8 +198,14 @@ def update_product(product_id):
       parameters:
       - in: path
         schema: ProductParameter
+      requestBody:
+        description: Product Object
+        required: true
+        content:
+          application/json:
+            schema: ProductSchema
       responses:
-        200:
+        202:
           content:
             application/json:
               schema: ProductSchema
@@ -186,10 +224,10 @@ def update_product(product_id):
 
     db.session.commit()
 
-    return product_schema.jsonify(product)
+    return product_schema.jsonify(product), 202
 
 
-# Register the path and the entities within it
+# Register path and entities within it
 with app.test_request_context():
     spec.path(view=update_product)
 
@@ -204,7 +242,7 @@ def delete_product(product_id):
       - in: path
         schema: ProductParameter
       responses:
-        200:
+        204:
           content:
             application/json:
               schema: ProductSchema
@@ -214,15 +252,15 @@ def delete_product(product_id):
     db.session.delete(product)
     db.session.commit()
 
-    return product_schema.jsonify(product)
+    return product_schema.jsonify(product), 204
 
 
-# Register the path and the entities within it
+# Register path and entities within it
 with app.test_request_context():
     spec.path(view=delete_product)
 
 
-# Print OpenAPI spec
+# Print APISpec to populate /static/swagger.json
 # pprint(json.dumps(spec.to_dict()))
 
 
