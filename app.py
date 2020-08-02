@@ -106,7 +106,7 @@ def send_static(path):
 
 
 # Get all products
-@app.route('/products', methods=['GET'])
+@app.route('/api/products', methods=['GET'])
 def get_products():
     """Single product GET view.
     ---
@@ -124,7 +124,7 @@ def get_products():
 
 
 # Get single product
-@app.route('/products/<product_id>', methods=['GET'])
+@app.route('/api/products/<product_id>', methods=['GET'])
 def get_product(product_id):
     """Single product GET view.
     ---
@@ -144,7 +144,7 @@ def get_product(product_id):
 
 
 # Create single product
-@app.route('/products', methods=['POST'])
+@app.route('/api/products', methods=['POST'])
 def create_product():
     """Single product POST view.
     ---
@@ -175,7 +175,7 @@ def create_product():
 
 
 # Update single product
-@app.route('/products/<product_id>', methods=['PUT'])
+@app.route('/api/products/<product_id>', methods=['PUT'])
 def update_product(product_id):
     """Single product PUT view.
     ---
@@ -213,7 +213,7 @@ def update_product(product_id):
 
 
 # Delete single product
-@app.route('/products/<product_id>', methods=['DELETE'])
+@app.route('/api/products/<product_id>', methods=['DELETE'])
 def delete_product(product_id):
     """Single product DELETE view.
     ---
