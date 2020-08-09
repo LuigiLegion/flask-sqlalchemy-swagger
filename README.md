@@ -1,4 +1,4 @@
-# Flask-SQLAlchemy-Swagger
+# Flask SQLAlchemy Swagger
 
 ## Dev Environment Setup:
 

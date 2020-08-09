@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "description": "A minimal product catalogue management API",
+    "description": "A minimalistic product catalogue management API",
     "title": "flask-sqlalchemy-swagger",
     "version": "1.0.0",
     "license": {
