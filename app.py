@@ -73,7 +73,7 @@ spec = APISpec(
     title="flask-sqlalchemy-swagger",
     version="1.0.0",
     openapi_version="3.0.2",
-    info=dict(description="A minimal product catalogue management API"),
+    info=dict(description="A minimalistic product catalogue management API"),
     plugins=[FlaskPlugin(), MarshmallowPlugin()]
 )
 
