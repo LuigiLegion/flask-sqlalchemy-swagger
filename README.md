@@ -1,5 +1,15 @@
 # Flask SQLAlchemy Swagger
 
+![Flask SQLAlchemy Swagger Screenshot](./screenshot.png)
+
+## Description:
+
+Python web API Swagger UI boilerplate.
+
+### Tech Stack:
+
+Built using Python, Flask, SQLAlchemy, Marshmallow, APISpec, and SQLite.
+
 ## Dev Environment Setup:
 
 ```bash
@@ -25,8 +35,8 @@ Navigate to generated Swagger UI in your browser of choice at http://localhost:5
 
 ## REST API Endpoints:
 
-- GET /api/products
-- GET /api/products/:product_id
-- POST /api/products
-- PUT /api/products/:product_id
-- DELETE /api/products/:product_id
+- GET /products
+- GET /products/{product_id}
+- POST /products
+- PUT /products/{product_id}
+- DELETE /products/{product_id}
