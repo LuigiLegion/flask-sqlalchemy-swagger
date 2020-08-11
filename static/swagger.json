@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "description": "A minimalistic product catalogue management API",
-    "title": "flask-sqlalchemy-swagger",
+    "title": "Flask SQLAlchemy Swagger",
+    "description": "Python web API Swagger UI boilerplate",
     "version": "1.0.0",
     "license": {
       "name": "MIT",
@@ -16,8 +16,8 @@
   ],
   "tags": [
     {
-      "name": "Products",
-      "description": "Example API for creating, updating, and deleting products in a catalogue"
+      "name": "products",
+      "description": "Minimalistic product catalogue management API"
     }
   ],
   "components": {
@@ -25,11 +25,11 @@
       "Product": {
         "type": "object",
         "properties": {
-          "description": { "type": "string" },
+          "id": { "type": "integer", "format": "int32" },
           "name": { "type": "string" },
+          "description": { "type": "string" },
           "price": { "type": "integer", "format": "int32" },
-          "quantity": { "type": "integer", "format": "int32" },
-          "id": { "type": "integer", "format": "int32" }
+          "quantity": { "type": "integer", "format": "int32" }
         }
       },
       "ProductId": {
@@ -39,7 +39,7 @@
     }
   },
   "paths": {
-    "/api/products": {
+    "/products": {
       "get": {
         "responses": {
           "200": {
@@ -72,7 +72,7 @@
         }
       }
     },
-    "/api/products/{product_id}": {
+    "/products/{product_id}": {
       "get": {
         "parameters": [
           {

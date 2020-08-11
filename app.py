@@ -73,7 +73,7 @@ spec = APISpec(
     title="flask-sqlalchemy-swagger",
     version="1.0.0",
     openapi_version="3.0.2",
-    info=dict(description="A minimalistic product catalogue management API"),
+    info=dict(description="Python web API Swagger UI boilerplate"),
     plugins=[FlaskPlugin(), MarshmallowPlugin()]
 )
 
@@ -106,7 +106,7 @@ def send_static(path):
 
 
 # Get all products
-@app.route('/api/products', methods=['GET'])
+@app.route('/products', methods=['GET'])
 def get_products():
     """Single product GET view.
     ---
@@ -124,7 +124,7 @@ def get_products():
 
 
 # Get single product
-@app.route('/api/products/<product_id>', methods=['GET'])
+@app.route('/products/<product_id>', methods=['GET'])
 def get_product(product_id):
     """Single product GET view.
     ---
@@ -144,7 +144,7 @@ def get_product(product_id):
 
 
 # Create single product
-@app.route('/api/products', methods=['POST'])
+@app.route('/products', methods=['POST'])
 def create_product():
     """Single product POST view.
     ---
@@ -175,7 +175,7 @@ def create_product():
 
 
 # Update single product
-@app.route('/api/products/<product_id>', methods=['PUT'])
+@app.route('/products/<product_id>', methods=['PUT'])
 def update_product(product_id):
     """Single product PUT view.
     ---
@@ -213,7 +213,7 @@ def update_product(product_id):
 
 
 # Delete single product
-@app.route('/api/products/<product_id>', methods=['DELETE'])
+@app.route('/products/<product_id>', methods=['DELETE'])
 def delete_product(product_id):
     """Single product DELETE view.
     ---
